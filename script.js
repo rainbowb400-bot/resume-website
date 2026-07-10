@@ -1,0 +1,1 @@
+console.log('Resume V2 loaded');
