@@ -1,2 +1,2 @@
 # songzhiduo-resume
-Open index.html with Live Server.
+Personal resume website built with HTML, CSS and JavaScript.
