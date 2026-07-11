@@ -257,4 +257,60 @@ nav a {
 
     color:#2563EB;
 
+}@media (max-width: 768px) {
+
+    body {
+        padding: 20px;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    h1 {
+        font-size: 32px;
+    }
+
+    h2 {
+        font-size: 24px;
+    }
+
+    p {
+        font-size: 16px;
+        line-height: 1.6;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .navbar {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px 20px;
+    }
+
+    .nav-links {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .wrap {
+        padding: 0 20px;
+    }
+
+    .card {
+        padding: 20px;
+    }
+
+    .chips {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
 }
