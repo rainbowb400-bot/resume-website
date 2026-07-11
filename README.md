@@ -3,6 +3,9 @@ Personal resume website built with HTML, CSS and JavaScript.
 # Song Zhiduo Resume
 
 一个使用 HTML、CSS 和 JavaScript 开发的个人简历网站。
+## 🌐 Online Demo
+
+https://rainbowb400-bot.github.io/resume-website/
 
 ## ✨ Features
 
@@ -22,7 +25,8 @@ Personal resume website built with HTML, CSS and JavaScript.
 
 ## 📷 Preview
 
-（首页截图）
+（<img width="1861" height="886" alt="image" src="https://github.com/user-attachments/assets/cf3421cb-ffb3-4a85-91a5-7da237c7fa43" />
+）
 
 ## 🚀 Run
 
