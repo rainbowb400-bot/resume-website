@@ -473,17 +473,27 @@ img {
     }
 
 
-    .navbar {
+  .navbar {
 
-        flex-direction: column;
+    flex-direction: column;
 
-        gap: 15px;
+    gap: 15px;
 
-        padding: 15px 20px;
-        
-        position: static;
+    padding: 15px 20px;
 
-    }
+    position: absolute;
+
+    top: 0;
+
+    left: 0;
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    z-index: 999;
+
+}
 
 
     .nav-links {
