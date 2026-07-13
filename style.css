@@ -303,6 +303,8 @@ img {
     font-weight: 600;
 
     transition: var(--transition);
+    
+    margin-left: 16px;
 
 }
 
@@ -316,6 +318,22 @@ img {
     transform: translateY(-3px);
 
 }
+
+
+/* 项目按钮布局 */
+
+.project-buttons {
+
+    display: flex;
+
+    gap: 15px;
+
+    margin-top: 15px;
+
+}
+
+
+
 /* ===================================
    Cards
 =================================== */
@@ -420,6 +438,7 @@ img {
 .project-card p {
 
     margin-bottom: 16px;
+    
 
 }
 
@@ -530,6 +549,5 @@ img {
         padding: 20px;
 
     }
-
 
 }
