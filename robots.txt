@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://songzhiduo-portfolio-d3a62b54c6c-1453799877.tcloudbaseapp.com/sitemap.xml
