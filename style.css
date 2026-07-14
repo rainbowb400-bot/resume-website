@@ -544,10 +544,11 @@ img {
     .primary-btn,
     .secondary-btn {
 
-        text-align: center;
+    text-align: center;
 
-    }
+    white-space: nowrap;
 
+}
 
     .card {
 
