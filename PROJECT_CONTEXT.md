@@ -420,39 +420,62 @@ AI 能力
 而不是：
 
 炫技术。
-## Troubleshooting History
+## 故障排查记录
 
-### GitHub Push Failure (July 2026)
+### GitHub 推送失败（2026年7月）
 
-Problem:
+问题：
 
-Git push failed with:
+Git 推送失败，提示：
 
 Failed to connect to github.com:443
 
 
-Diagnosis:
+诊断过程：
 
-- Git proxy checked
-- hosts file checked
-- DNS checked
+- 检查 Git 代理配置
+- 检查 hosts 文件配置
+- 检查 DNS 解析情况
 
 
-Root Cause:
+根本原因：
 
-Router DNS mapped:
+路由器 DNS 配置异常，将：
 
 github.com → 127.0.0.1
 
 
-Solution:
+解决方案：
 
-Changed DNS server to:
+修改 DNS 服务器为：
 
 223.5.5.5
 1.1.1.1
 
 
-Result:
+结果：
 
-GitHub push restored.
+GitHub 推送功能恢复正常。
+
+
+---
+
+## 安全审查记录
+
+完成时间：2026年7月
+
+
+检查内容：
+
+- 个人信息安全检查
+- Git 仓库安全检查
+- Git 提交邮箱隐私保护
+- 图片资源安全检查
+- 云端部署安全检查
+- robots.txt 配置验证
+- .git 文件泄露检查
+
+
+结果：
+
+未发现严重安全问题。
