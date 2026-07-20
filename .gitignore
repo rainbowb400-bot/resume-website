@@ -1,0 +1,22 @@
+# System files
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+
+# Environment
+.env
+.env.*
+
+# Secrets
+*.key
+*.pem
+*.secret
+
+# Dependencies
+node_modules/
+
+# Temporary files
+*.log
+*.tmp
