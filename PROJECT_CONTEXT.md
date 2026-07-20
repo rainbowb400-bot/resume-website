@@ -420,3 +420,39 @@ AI 能力
 而不是：
 
 炫技术。
+## Troubleshooting History
+
+### GitHub Push Failure (July 2026)
+
+Problem:
+
+Git push failed with:
+
+Failed to connect to github.com:443
+
+
+Diagnosis:
+
+- Git proxy checked
+- hosts file checked
+- DNS checked
+
+
+Root Cause:
+
+Router DNS mapped:
+
+github.com → 127.0.0.1
+
+
+Solution:
+
+Changed DNS server to:
+
+223.5.5.5
+1.1.1.1
+
+
+Result:
+
+GitHub push restored.
