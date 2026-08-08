@@ -31,6 +31,13 @@
    Global
 =================================== */
 
+html {
+
+    scroll-padding-top: 96px;
+
+}
+
+
 body {
 
     margin: 0;
@@ -303,8 +310,6 @@ img {
     font-weight: 600;
 
     transition: var(--transition);
-    
-    margin-left: 16px;
 
 }
 
