@@ -443,8 +443,27 @@ img {
 .project-card p {
 
     margin-bottom: 16px;
-    
+}
 
+.project-cover {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    background: var(--border);
+}
+
+.outcome {
+    color: var(--gray);
+    font-size: 14px;
+    line-height: 1.6;
+    margin-top: -6px;
+    padding: 10px 12px;
+    background: #F5F7FA;
+    border-left: 3px solid var(--primary);
+    border-radius: 8px;
 }
 /* ===================================
    Footer

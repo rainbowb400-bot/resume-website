@@ -70,6 +70,8 @@
 - preview 图
 - Footer
 - 图片 Lazy Loading
+- 图片优化：封面 WebP（1600/800 两档）、og 图 1200×630、favicon 32px
+- 经历与项目文案改为成果导向，新增"产出"行
 - Responsive Design
 - Git 管理
 - GitHub 仓库
@@ -86,6 +88,7 @@ Version 2.0 Refactor：
 - 删除多余 section
 - 添加 Footer
 - 图片懒加载
+- 项目封面统一 16:9 比例、object-fit 与圆角
 
 ---
 
@@ -149,17 +152,6 @@ Photography：
 ---
 
 中优先级：
-
-□ Project Card 视觉统一
-
-统一：
-
-- 图片高度
-- 间距
-- 标签位置
-- 按钮位置
-
----
 
 □ Contact 美化
 

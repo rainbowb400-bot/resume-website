@@ -2,7 +2,7 @@
 
 > A modern personal portfolio showcasing my projects, learning journey, and digital creations.
 
-![Portfolio Preview](assets/preview.png)
+![Portfolio Preview](assets/preview-1200.png)
 
 ---
 
@@ -46,6 +46,8 @@ The website is designed with a modern minimal style inspired by Apple, Linear, S
 - 🔍 SEO Optimization
 - 🖼 Open Graph Preview
 - ⚡ Lazy Loading Images
+- 🖼 WebP 响应式封面（体积减少约 98%）
+- 📦 成果导向内容呈现（"产出"行）
 - 🎨 Minimal UI
 
 ---
