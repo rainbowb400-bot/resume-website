@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>宋志铎 · Personal Portfolio 演示</title>
+  <link rel="icon" type="image/png" href="assets/favicon-32.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ============ VIEWPORT / STAGE ============ */
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: var(--stage-bg, #070b10);
+    }
+
+    .deck-viewport {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      background: var(--stage-bg, #070b10);
+    }
+
+    .deck-stage {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      transform-origin: 0 0;
+      background: var(--slide-bg, #070b10);
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      display: block;
+      visibility: hidden;
+      opacity: 0;
+      pointer-events: none;
+      background: var(--slide-bg, #070b10);
+    }
+
+    .slide.active,
+    .slide.visible {
+      visibility: visible;
+      opacity: 1;
+      pointer-events: auto;
+      z-index: 1;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.2s !important;
+      }
+    }
+
+    /* ============ DESIGN TOKENS ============ */
+    :root {
+      --stage-bg: #070b10;
+      --slide-bg: #070b10;
+      --ink: #eef4fb;
+      --muted: rgba(238, 244, 251, 0.64);
+      --soft: rgba(238, 244, 251, 0.07);
+      --line: rgba(238, 244, 251, 0.16);
+      --blue: #5b8cff;
+      --cyan: #7fd7ff;
+      --warm: #ffd28a;
+      --font-display: "Instrument Serif", "Georgia", serif;
+      --font-sans: "Manrope", "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+      --font-mono: "JetBrains Mono", "Consolas", monospace;
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: var(--font-sans);
+      color: var(--ink);
+    }
+
+    /* ============ SHARED SLIDE ATMOSPHERE ============ */
+    .slide {
+      background:
+        radial-gradient(circle at 12% 14%, rgba(91, 140, 255, 0.16), transparent 30%),
+        radial-gradient(circle at 86% 20%, rgba(127, 215, 255, 0.10), transparent 26%),
+        radial-gradient(circle at 72% 96%, rgba(91, 140, 255, 0.10), transparent 34%),
+        linear-gradient(140deg, #070b10 0%, #0c1420 52%, #06090d 100%);
+    }
+
+    .slide::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(238, 244, 251, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(238, 244, 251, 0.035) 1px, transparent 1px);
+      background-size: 72px 72px;
+      mask-image: radial-gradient(circle at 50% 42%, black 0%, transparent 74%);
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    .slide::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.34'/%3E%3C/svg%3E");
+      mix-blend-mode: soft-light;
+      opacity: 0.2;
+      pointer-events: none;
+    }
+
+    .content {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      padding: 84px 110px 112px;
+    }
+
+    .kicker {
+      font: 700 22px/1 var(--font-mono);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 30px;
+    }
+
+    h1, h2, h3, p { margin: 0; }
+
+    h1 {
+      font: 800 148px/0.96 var(--font-sans);
+      letter-spacing: -0.045em;
+      color: var(--ink);
+    }
+
+    h2 {
+      font: 800 86px/1.04 var(--font-sans);
+      letter-spacing: -0.035em;
+      color: var(--ink);
+      max-width: 1500px;
+    }
+
+    h3 {
+      font: 800 30px/1.08 var(--font-sans);
+      letter-spacing: -0.03em;
+    }
+
+    .lead {
+      font-size: 34px;
+      line-height: 1.34;
+      letter-spacing: -0.02em;
+      color: var(--muted);
+      max-width: 900px;
+      margin-top: 34px;
+    }
+
+    .serif {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--cyan);
+      letter-spacing: -0.01em;
+    }
+
+    .mono {
+      font-family: var(--font-mono);
+      letter-spacing: -0.02em;
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 40px;
+    }
+
+    .chip {
+      border: 1px solid var(--line);
+      background: rgba(238, 244, 251, 0.06);
+      border-radius: 999px;
+      padding: 12px 19px;
+      font: 700 17px/1 var(--font-mono);
+      color: rgba(238, 244, 251, 0.82);
+    }
+
+    /* ============ CHROME ============ */
+    .progress {
+      position: absolute;
+      z-index: 5;
+      left: 110px;
+      bottom: 48px;
+      width: 420px;
+      height: 2px;
+      background: rgba(238, 244, 251, 0.15);
+      overflow: hidden;
+    }
+
+    .progress span {
+      display: block;
+      width: 0;
+      height: 100%;
+      background: linear-gradient(90deg, var(--blue), var(--cyan));
+      transition: width 0.35s var(--ease-out-expo);
+    }
+
+    .page-number {
+      position: absolute;
+      z-index: 5;
+      right: 110px;
+      bottom: 40px;
+      font: 700 21px/1 var(--font-mono);
+      color: rgba(238, 244, 251, 0.42);
+    }
+
+    .hint {
+      position: fixed;
+      z-index: 20;
+      right: clamp(14px, 2vw, 28px);
+      top: clamp(14px, 2vw, 28px);
+      color: rgba(238, 244, 251, 0.55);
+      font: 700 clamp(10px, 1vw, 13px)/1 var(--font-mono);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      pointer-events: none;
+    }
+
+    .edit-hotzone {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 84px;
+      height: 84px;
+      z-index: 10000;
+    }
+
+    .edit-toggle {
+      position: fixed;
+      top: 18px;
+      left: 18px;
+      z-index: 10001;
+      opacity: 0;
+      pointer-events: none;
+      border: 1px solid rgba(238, 244, 251, 0.22);
+      border-radius: 999px;
+      padding: 10px 14px;
+      color: var(--ink);
+      background: rgba(7, 11, 16, 0.64);
+      backdrop-filter: blur(14px);
+      font: 700 13px/1 var(--font-mono);
+      letter-spacing: 0.08em;
+      transition: opacity 0.22s var(--ease-out-expo), border-color 0.22s var(--ease-out-expo);
+      cursor: pointer;
+    }
+
+    .edit-toggle.show,
+    .edit-toggle.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .edit-toggle:hover,
+    .edit-toggle:focus-visible {
+      border-color: var(--cyan);
+      outline: 0;
+    }
+
+    body.editing [contenteditable="true"] {
+      outline: 2px dashed rgba(127, 215, 255, 0.8);
+      outline-offset: 5px;
+      cursor: text;
+    }
+
+    /* ============ MOTION ============ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s var(--ease-out-expo), transform 0.7s var(--ease-out-expo);
+      transition-delay: var(--delay, 0ms);
+    }
+
+    .visible .reveal {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .float-card {
+      animation: floatCard 7s ease-in-out infinite;
+    }
+
+    @keyframes floatCard {
+      0%, 100% { transform: translateY(0) rotate(-1deg); }
+      50% { transform: translateY(-16px) rotate(1deg); }
+    }
+
+    /* ============ SLIDE 1: COVER ============ */
+    .cover-layout {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 60px;
+      align-items: center;
+      height: 100%;
+    }
+
+    .cover-name {
+      margin-top: 8px;
+    }
+
+    .cover-name .accent {
+      color: var(--blue);
+    }
+
+    .cover-sub {
+      margin-top: 26px;
+      font-size: 31px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: rgba(238, 244, 251, 0.9);
+    }
+
+    .cover-rule {
+      width: 86px;
+      height: 4px;
+      margin-top: 38px;
+      background: linear-gradient(90deg, var(--blue), var(--cyan));
+      border-radius: 99px;
+    }
+
+    .title-mark {
+      position: relative;
+      width: 620px;
+      height: 620px;
+      border-radius: 44px;
+      border: 1px solid rgba(238, 244, 251, 0.18);
+      background:
+        linear-gradient(145deg, rgba(238, 244, 251, 0.10), rgba(238, 244, 251, 0.03)),
+        radial-gradient(circle at 35% 25%, rgba(91, 140, 255, 0.32), transparent 34%),
+        radial-gradient(circle at 72% 76%, rgba(127, 215, 255, 0.24), transparent 36%);
+      box-shadow: 0 38px 120px rgba(0, 0, 0, 0.45);
+      overflow: hidden;
+      justify-self: end;
+    }
+
+    .title-mark .orbit {
+      position: absolute;
+      border: 1px solid rgba(238, 244, 251, 0.18);
+      border-radius: 50%;
+      inset: 76px;
+      animation: spin 28s linear infinite;
+    }
+
+    .title-mark .orbit:nth-child(2) { inset: 146px; animation-duration: 18s; animation-direction: reverse; }
+    .title-mark .orbit:nth-child(3) { inset: 226px; animation-duration: 13s; }
+
+    .title-mark .core {
+      position: absolute;
+      inset: 244px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      color: #070b10;
+      display: grid;
+      place-items: center;
+      font: 800 60px/1 var(--font-sans);
+      letter-spacing: -0.06em;
+      box-shadow: 0 0 90px rgba(91, 140, 255, 0.45);
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ============ SLIDE 2: ABOUT ============ */
+    .about-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 62px;
+    }
+
+    .about-card {
+      min-height: 320px;
+      border: 1px solid var(--line);
+      background: rgba(238, 244, 251, 0.05);
+      border-radius: 32px;
+      padding: 34px 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .about-card .mono {
+      color: var(--cyan);
+      font-size: 18px;
+    }
+
+    .about-card h3 {
+      font-size: 36px;
+      margin: 26px 0 18px;
+    }
+
+    .about-card p {
+      font-size: 24px;
+      line-height: 1.48;
+      color: var(--muted);
+    }
+
+    /* ============ SLIDE 3: CAPABILITIES ============ */
+    .cap-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-top: 54px;
+    }
+
+    .cap-card {
+      min-height: 280px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(238, 244, 251, 0.08), rgba(238, 244, 251, 0.03));
+      border-radius: 32px;
+      padding: 32px 34px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .cap-card h3 {
+      font-size: 34px;
+    }
+
+    .cap-card .cap-output {
+      font-size: 22px;
+      line-height: 1.42;
+      color: var(--muted);
+      margin-top: 18px;
+      max-width: 720px;
+    }
+
+    .cap-card .cap-output strong {
+      color: var(--warm);
+      font-weight: 700;
+    }
+
+    /* ============ SLIDE 4-6: PROJECTS ============ */
+    .project-layout {
+      display: grid;
+      grid-template-columns: 0.98fr 1.02fr;
+      gap: 76px;
+      align-items: center;
+      height: 100%;
+    }
+
+    .shot {
+      position: relative;
+      border-radius: 30px;
+      border: 1px solid rgba(238, 244, 251, 0.16);
+      overflow: hidden;
+      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.42);
+    }
+
+    .shot img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .shot::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 55%, rgba(7, 11, 16, 0.32));
+      pointer-events: none;
+    }
+
+    .shot-tag {
+      position: absolute;
+      left: 20px;
+      bottom: 18px;
+      z-index: 2;
+      font: 700 16px/1 var(--font-mono);
+      letter-spacing: 0.08em;
+      color: rgba(238, 244, 251, 0.9);
+      background: rgba(7, 11, 16, 0.55);
+      border: 1px solid rgba(238, 244, 251, 0.2);
+      border-radius: 999px;
+      padding: 10px 15px;
+      backdrop-filter: blur(12px);
+    }
+
+    .project-body h3 {
+      font-size: 62px;
+      letter-spacing: -0.035em;
+      margin-top: 22px;
+    }
+
+    .project-body .desc {
+      font-size: 26px;
+      line-height: 1.52;
+      color: var(--muted);
+      margin-top: 26px;
+      max-width: 780px;
+    }
+
+    .outcome-line {
+      margin-top: 26px;
+      font-size: 22px;
+      color: rgba(238, 244, 251, 0.86);
+    }
+
+    .outcome-line strong {
+      color: var(--warm);
+      font-weight: 700;
+      margin-right: 10px;
+    }
+
+    .project-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 32px;
+    }
+
+    .btn {
+      display: inline-block;
+      border: 1px solid rgba(91, 140, 255, 0.5);
+      border-radius: 999px;
+      padding: 15px 26px;
+      font: 700 18px/1 var(--font-sans);
+      color: #eaf1ff;
+      background: rgba(91, 140, 255, 0.14);
+      text-decoration: none;
+      transition: background 0.22s var(--ease-out-expo), border-color 0.22s var(--ease-out-expo);
+    }
+
+    .btn:hover,
+    .btn:focus-visible {
+      background: rgba(91, 140, 255, 0.3);
+      border-color: var(--cyan);
+      outline: 0;
+    }
+
+    /* ============ SLIDE 7: PHOTOGRAPHY ============ */
+    .photo-archive {
+      position: relative;
+      height: 640px;
+      border-radius: 34px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(238, 244, 251, 0.07), rgba(238, 244, 251, 0.02));
+      overflow: hidden;
+    }
+
+    .photo-archive::before {
+      content: "2024 — 2026";
+      position: absolute;
+      left: 30px;
+      top: 26px;
+      font: 700 17px/1 var(--font-mono);
+      letter-spacing: 0.1em;
+      color: rgba(238, 244, 251, 0.4);
+    }
+
+    .film-strip {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      gap: 26px;
+      align-items: center;
+      justify-content: center;
+      padding: 70px 44px 40px;
+    }
+
+    .film-card {
+      width: 300px;
+      height: 460px;
+      border-radius: 22px;
+      border: 1px solid rgba(238, 244, 251, 0.18);
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.4);
+    }
+
+    .film-card:nth-child(1) { transform: rotate(-4deg) translateY(18px); background: linear-gradient(150deg, #173a5e, #0b1c30 60%, #123); }
+    .film-card:nth-child(2) { transform: translateY(-14px); background: linear-gradient(150deg, #25436b, #101d33 62%, #0a1626); }
+    .film-card:nth-child(3) { transform: rotate(4deg) translateY(16px); background: linear-gradient(150deg, #0e2c46, #081827 58%, #0b1a2c); }
+
+    .film-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 30% 22%, rgba(127, 215, 255, 0.28), transparent 34%),
+        radial-gradient(circle at 76% 82%, rgba(91, 140, 255, 0.24), transparent 40%);
+      mix-blend-mode: screen;
+    }
+
+    .film-card .frame {
+      position: absolute;
+      inset: 16px;
+      border: 1px solid rgba(238, 244, 251, 0.14);
+      border-radius: 14px;
+    }
+
+    .film-card .cap {
+      position: absolute;
+      left: 20px;
+      right: 20px;
+      bottom: 18px;
+      font: 700 15px/1 var(--font-mono);
+      letter-spacing: 0.08em;
+      color: rgba(238, 244, 251, 0.72);
+    }
+
+    /* ============ SLIDE 8: EXPERIENCE ============ */
+    .timeline {
+      margin-top: 46px;
+      display: grid;
+      gap: 4px;
+    }
+
+    .t-row {
+      display: grid;
+      grid-template-columns: 250px 58px 1fr;
+      gap: 26px;
+      align-items: start;
+      padding: 15px 0;
+    }
+
+    .t-year {
+      font: 700 21px/1.3 var(--font-mono);
+      color: var(--cyan);
+      padding-top: 6px;
+    }
+
+    .t-node {
+      position: relative;
+      width: 58px;
+      height: 100%;
+      min-height: 96px;
+    }
+
+    .t-node::before {
+      content: "";
+      position: absolute;
+      left: 26px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, var(--blue), var(--cyan), transparent);
+    }
+
+    .t-node::after {
+      content: "";
+      position: absolute;
+      left: 20px;
+      top: 12px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 18px rgba(127, 215, 255, 0.65);
+    }
+
+    .t-body h3 {
+      font-size: 27px;
+    }
+
+    .t-body .t-sub {
+      font: 600 20px/1.3 var(--font-sans);
+      color: rgba(238, 244, 251, 0.66);
+      margin-top: 6px;
+    }
+
+    .t-body .t-out {
+      font-size: 19px;
+      color: rgba(238, 244, 251, 0.5);
+      margin-top: 8px;
+    }
+
+    /* ============ SLIDE 9: CREDENTIALS ============ */
+    .cred-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-top: 56px;
+    }
+
+    .cred-card {
+      min-height: 520px;
+      border: 1px solid var(--line);
+      background: rgba(238, 244, 251, 0.05);
+      border-radius: 34px;
+      padding: 40px 38px;
+    }
+
+    .cred-card .mono {
+      color: var(--cyan);
+      font-size: 18px;
+    }
+
+    .cred-card h3 {
+      font-size: 44px;
+      margin: 24px 0 16px;
+    }
+
+    .cred-card .cred-meta {
+      font: 600 22px/1.4 var(--font-sans);
+      color: rgba(238, 244, 251, 0.72);
+      margin-bottom: 26px;
+    }
+
+    /* ============ SLIDE 10: CONTACT ============ */
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 80px;
+      align-items: center;
+      height: 100%;
+    }
+
+    .contact-row {
+      display: grid;
+      grid-template-columns: 190px 1fr;
+      gap: 24px;
+      align-items: baseline;
+      padding: 22px 0;
+      border-bottom: 1px solid rgba(238, 244, 251, 0.1);
+    }
+
+    .contact-row:last-child { border-bottom: 0; }
+
+    .contact-row .mono {
+      color: var(--cyan);
+      font-size: 19px;
+    }
+
+    .contact-row .val {
+      font-size: 25px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .contact-row .val a {
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(238, 244, 251, 0.24);
+      transition: border-color 0.2s var(--ease-out-expo), color 0.2s var(--ease-out-expo);
+    }
+
+    .contact-row .val a:hover {
+      color: var(--cyan);
+      border-color: var(--cyan);
+    }
+
+    .contact-side {
+      display: grid;
+      gap: 24px;
+    }
+
+    .contact-card {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(91, 140, 255, 0.12), rgba(238, 244, 251, 0.04));
+      border-radius: 30px;
+      padding: 32px 34px;
+    }
+
+    .contact-card .mono {
+      color: var(--cyan);
+      font-size: 17px;
+    }
+
+    .contact-card h3 {
+      font-size: 30px;
+      margin: 18px 0 12px;
+    }
+
+    .contact-card p {
+      font-size: 22px;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    .contact-cta {
+      margin-top: 38px;
+    }
+  </style>
+</head>
+<body>
+  <div class="deck-viewport">
+    <div class="hint">← → / Space 翻页 · F 全屏 · E 编辑</div>
+    <main class="deck-stage" id="deckStage">
+
+      <!-- SLIDE 1: COVER -->
+      <section class="slide active visible" data-slide-id="cover" data-original-number="01" data-slide-title="封面：宋志铎">
+        <div class="content cover-layout">
+          <div>
+            <div class="kicker reveal">Personal Portfolio · 2026</div>
+            <h1 class="cover-name reveal" style="--delay: 80ms">宋<span class="accent">志铎</span></h1>
+            <p class="cover-sub reveal" style="--delay: 150ms">质量管理背景 · 持续学习 AI 与知识管理 · 内容创作与数字项目</p>
+            <div class="cover-rule reveal" style="--delay: 210ms"></div>
+            <p class="lead reveal" style="--delay: 260ms">把每一次实践，沉淀成可查看的作品。</p>
+            <div class="chip-row reveal" style="--delay: 320ms">
+              <span class="chip">安全管理</span>
+              <span class="chip">门店运营</span>
+              <span class="chip">内容创作</span>
+              <span class="chip">数字项目</span>
+            </div>
+          </div>
+          <div class="title-mark float-card reveal" style="--delay: 190ms">
+            <div class="orbit"></div>
+            <div class="orbit"></div>
+            <div class="orbit"></div>
+            <div class="core">SZD</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 2: ABOUT -->
+      <section class="slide" data-slide-id="about" data-original-number="02" data-slide-title="关于我">
+        <div class="content">
+          <div class="kicker reveal">About</div>
+          <h2 class="reveal" style="--delay: 70ms">不只是一份简历，<span class="serif">更是一份成长记录</span>。</h2>
+          <div class="about-grid">
+            <div class="about-card reveal" style="--delay: 130ms">
+              <span class="mono">01 · 定位</span>
+              <h3>质量管理专业</h3>
+              <p>邵阳学院质量管理专业毕业，管理学学士。关注人工智能、知识管理、数字工具与个人效率。</p>
+            </div>
+            <div class="about-card reveal" style="--delay: 190ms">
+              <span class="mono">02 · 方向</span>
+              <h3>把工具变成产出</h3>
+              <p>用 AI、Obsidian、Git 构建自己的信息工作流：网站、知识库、播客与内容，都以可查看的产出呈现。</p>
+            </div>
+            <div class="about-card reveal" style="--delay: 250ms">
+              <span class="mono">03 · 方式</span>
+              <h3>学习 → 实践 → 沉淀</h3>
+              <p>从安全管理到门店运营，从摄影到内容创作，每一段经历都整理成标准化的方法与作品。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 3: CAPABILITIES -->
+      <section class="slide" data-slide-id="capabilities" data-original-number="03" data-slide-title="能力地图">
+        <div class="content">
+          <div class="kicker reveal">Capabilities</div>
+          <h2 class="reveal" style="--delay: 70ms">能力不是标签，<span class="serif">而是能交付的产出</span>。</h2>
+          <div class="cap-grid">
+            <div class="cap-card reveal" style="--delay: 120ms">
+              <h3>数字工具与 AI</h3>
+              <p class="cap-output"><strong>产出方向：</strong>用 ChatGPT、Git、GitHub、Obsidian 与 VS Code 完成网站、知识库与自动化工作流。</p>
+              <div class="chip-row">
+                <span class="chip">ChatGPT</span><span class="chip">Git</span><span class="chip">GitHub</span><span class="chip">Obsidian</span><span class="chip">VS Code</span>
+              </div>
+            </div>
+            <div class="cap-card reveal" style="--delay: 170ms">
+              <h3>内容创作与设计</h3>
+              <p class="cap-output"><strong>产出方向：</strong>独立产出播客节目、商品详情页、摄影作品与视觉内容，覆盖策划到发布全流程。</p>
+              <div class="chip-row">
+                <span class="chip">Photography</span><span class="chip">Podcast</span><span class="chip">Photoshop</span><span class="chip">内容策划</span><span class="chip">视觉设计</span>
+              </div>
+            </div>
+            <div class="cap-card reveal" style="--delay: 220ms">
+              <h3>管理与文档</h3>
+              <p class="cap-output"><strong>产出方向：</strong>把分散的操作经验沉淀为可培训、可复用的标准化文档与流程。</p>
+              <div class="chip-row">
+                <span class="chip">Excel</span><span class="chip">Word</span><span class="chip">PowerPoint</span><span class="chip">ISO9001</span><span class="chip">流程优化</span>
+              </div>
+            </div>
+            <div class="cap-card reveal" style="--delay: 270ms">
+              <h3>基础开发</h3>
+              <p class="cap-output"><strong>产出方向：</strong>从设计、开发到部署完整交付响应式网站，并用 Git 持续迭代。</p>
+              <div class="chip-row">
+                <span class="chip">HTML5</span><span class="chip">CSS3</span><span class="chip">GitHub Pages</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 4: PROJECT PORTFOLIO -->
+      <section class="slide" data-slide-id="project-portfolio" data-original-number="04" data-slide-title="项目：个人网站">
+        <div class="content project-layout">
+          <div class="shot reveal" style="--delay: 100ms">
+            <img src="assets/covers/portfolio-cover-1600.webp" alt="个人作品集网站封面" width="1600" height="900" />
+            <span class="shot-tag">PORTFOLIO SITE</span>
+          </div>
+          <div class="project-body">
+            <div class="kicker reveal" style="--delay: 80ms">Project 01</div>
+            <h3 class="reveal" style="--delay: 130ms">个人 Portfolio 网站</h3>
+            <p class="desc reveal" style="--delay: 190ms">独立完成从设计、开发到部署的全流程。响应式布局、SEO 与 Open Graph、图片懒加载与 WebP 优化；用 Git 管理 30+ 次迭代，部署至 GitHub Pages 与腾讯云。</p>
+            <p class="outcome-line reveal" style="--delay: 250ms"><strong>产出：</strong>线上作品集 · 开源仓库 · 30+ 次迭代提交</p>
+            <div class="chip-row reveal" style="--delay: 300ms">
+              <span class="chip">HTML</span><span class="chip">CSS</span><span class="chip">Git</span><span class="chip">GitHub Pages</span><span class="chip">AI Tools</span>
+            </div>
+            <div class="project-links reveal" style="--delay: 340ms">
+              <a class="btn" href="https://github.com/rainbowb400-bot/resume-website" target="_blank" rel="noopener noreferrer">查看源码</a>
+              <a class="btn" href="https://songzhiduo-portfolio-d3a62b54c6c-1453799877.tcloudbaseapp.com" target="_blank" rel="noopener noreferrer">访问网站</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 5: PROJECT PODCAST -->
+      <section class="slide" data-slide-id="project-podcast" data-original-number="05" data-slide-title="项目：原创播客">
+        <div class="content project-layout">
+          <div class="shot reveal" style="--delay: 100ms">
+            <img src="assets/covers/podcast-cover-1600.webp" alt="原创播客项目封面" width="1600" height="900" />
+            <span class="shot-tag">ORIGINAL PODCAST</span>
+          </div>
+          <div class="project-body">
+            <div class="kicker reveal" style="--delay: 80ms">Project 02</div>
+            <h3 class="reveal" style="--delay: 130ms">原创播客项目</h3>
+            <p class="desc reveal" style="--delay: 190ms">独立策划并运营个人播客：选题策划、内容研究、音频制作与社交媒体运营。节目已在小宇宙上线，内容同步发布在小红书，围绕文化与社会议题持续创作。</p>
+            <p class="outcome-line reveal" style="--delay: 250ms"><strong>产出：</strong>播客节目 · 小红书内容 · 选题与资料整理</p>
+            <div class="chip-row reveal" style="--delay: 300ms">
+              <span class="chip">内容策划</span><span class="chip">音频制作</span><span class="chip">资料整理</span><span class="chip">新媒体运营</span><span class="chip">视觉设计</span>
+            </div>
+            <div class="project-links reveal" style="--delay: 340ms">
+              <a class="btn" href="https://www.xiaoyuzhoufm.com/podcast/6a0ac9dcbf4b2a18244b3b80" target="_blank" rel="noopener noreferrer">查看播客</a>
+              <a class="btn" href="https://xhslink.com/m/wyo6wXmB4A" target="_blank" rel="noopener noreferrer">查看小红书</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 6: PROJECT KNOWLEDGE -->
+      <section class="slide" data-slide-id="project-knowledge" data-original-number="06" data-slide-title="项目：知识管理系统">
+        <div class="content project-layout">
+          <div class="shot reveal" style="--delay: 100ms">
+            <img src="assets/covers/knowledge-cover-1600.webp" alt="个人知识管理系统封面" width="1600" height="900" />
+            <span class="shot-tag">KNOWLEDGE SYSTEM</span>
+          </div>
+          <div class="project-body">
+            <div class="kicker reveal" style="--delay: 80ms">Project 03</div>
+            <h3 class="reveal" style="--delay: 130ms">个人知识管理系统</h3>
+            <p class="desc reveal" style="--delay: 190ms">使用 Obsidian 搭建个人知识库，对人工智能、设计、阅读与英语学习等内容做结构化整理，建立可长期积累、可检索的知识体系与信息管理工作流。</p>
+            <p class="outcome-line reveal" style="--delay: 250ms"><strong>产出：</strong>知识库体系 · 结构化笔记 · 信息管理工作流</p>
+            <div class="chip-row reveal" style="--delay: 300ms">
+              <span class="chip">Obsidian</span><span class="chip">Knowledge Management</span><span class="chip">AI</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 7: PROJECT PHOTOGRAPHY -->
+      <section class="slide" data-slide-id="project-photography" data-original-number="07" data-slide-title="项目：摄影整理">
+        <div class="content project-layout">
+          <div class="photo-archive reveal" style="--delay: 110ms">
+            <div class="film-strip">
+              <div class="film-card"><div class="frame"></div><span class="cap">观察 · 构图</span></div>
+              <div class="film-card"><div class="frame"></div><span class="cap">筛选 · 后期</span></div>
+              <div class="film-card"><div class="frame"></div><span class="cap">年度归档</span></div>
+            </div>
+          </div>
+          <div class="project-body">
+            <div class="kicker reveal" style="--delay: 80ms">Project 04</div>
+            <h3 class="reveal" style="--delay: 130ms">摄影作品整理</h3>
+            <p class="desc reveal" style="--delay: 190ms">持续记录个人摄影作品，完成年度照片整理与作品归档，建立从拍摄、筛选到后期整理的完整流程；通过大量实践提升视觉观察、构图与后期处理能力。</p>
+            <p class="outcome-line reveal" style="--delay: 250ms"><strong>产出：</strong>年度作品归档 · 摄影实践记录</p>
+            <div class="chip-row reveal" style="--delay: 300ms">
+              <span class="chip">Photography</span><span class="chip">Lightroom</span><span class="chip">Visual Design</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 8: EXPERIENCE -->
+      <section class="slide" data-slide-id="experience" data-original-number="08" data-slide-title="工作经历">
+        <div class="content">
+          <div class="kicker reveal">Experience</div>
+          <h2 class="reveal" style="--delay: 70ms">每一段经历，都沉淀出<span class="serif">可交付的产出</span>。</h2>
+          <div class="timeline">
+            <div class="t-row reveal" style="--delay: 120ms">
+              <div class="t-year">2026.05 – 07</div>
+              <div class="t-node"></div>
+              <div class="t-body">
+                <h3>运营｜灰隼文创工作室</h3>
+                <p class="t-sub">文创产品信息整理与上架 · 商品详情页 · 门店陈列方案</p>
+                <p class="t-out">产出：商品详情页 · 产品信息清单 · 陈列方案</p>
+              </div>
+            </div>
+            <div class="t-row reveal" style="--delay: 170ms">
+              <div class="t-year">2025.02 – 2026.02</div>
+              <div class="t-node"></div>
+              <div class="t-body">
+                <h3>安全员｜锡林浩特市城市更新公司</h3>
+                <p class="t-sub">燃气门站日常运行与安全管理 · 数据记录与设备监控</p>
+                <p class="t-out">产出：运行记录 · 设备监控记录 · 安全操作执行</p>
+              </div>
+            </div>
+            <div class="t-row reveal" style="--delay: 220ms">
+              <div class="t-year">2025.05 – 10</div>
+              <div class="t-node"></div>
+              <div class="t-body">
+                <h3>咖啡师 / 店铺运营协助｜宜半 One-Half Coffee</h3>
+                <p class="t-sub">饮品制作 · 门店陈列与海报设计 · 流程标准化</p>
+                <p class="t-out">产出：饮品制作流程文档 · 标准化文件初稿</p>
+              </div>
+            </div>
+            <div class="t-row reveal" style="--delay: 270ms">
+              <div class="t-year">2024.06 – 2025.02</div>
+              <div class="t-node"></div>
+              <div class="t-body">
+                <h3>摄影师｜摄影工作室</h3>
+                <p class="t-sub">商业摄影标准流程 · 拍摄、选片与交付</p>
+                <p class="t-out">产出：客户拍摄成片 · 标准化服务流程执行</p>
+              </div>
+            </div>
+            <div class="t-row reveal" style="--delay: 320ms">
+              <div class="t-year">2023.06 – 12</div>
+              <div class="t-node"></div>
+              <div class="t-body">
+                <h3>软装设计助理（实习）｜合筑设计</h3>
+                <p class="t-sub">设计素材整理 · 产品报价单 · 现场尺寸测量</p>
+                <p class="t-out">产出：分类素材库 · 产品报价单 · 项目资料</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 9: CREDENTIALS -->
+      <section class="slide" data-slide-id="credentials" data-original-number="09" data-slide-title="教育 · 资质">
+        <div class="content">
+          <div class="kicker reveal">Education · Certificates</div>
+          <h2 class="reveal" style="--delay: 70ms">理论基础 + 实践资质</h2>
+          <div class="cred-grid">
+            <div class="cred-card reveal" style="--delay: 130ms">
+              <span class="mono">EDUCATION</span>
+              <h3>邵阳学院</h3>
+              <p class="cred-meta">本科 · 质量管理专业 · 管理学学士<br />2020.09 – 2024.06</p>
+              <div class="chip-row">
+                <span class="chip">质量管理体系</span>
+                <span class="chip">六西格玛管理</span>
+                <span class="chip">生产与运作管理</span>
+                <span class="chip">标准化工程</span>
+                <span class="chip">数据分析</span>
+              </div>
+            </div>
+            <div class="cred-card reveal" style="--delay: 200ms">
+              <span class="mono">CERTIFICATES</span>
+              <h3>证书与资质</h3>
+              <div class="chip-row">
+                <span class="chip">安全员证书</span>
+                <span class="chip">ISO9001 管理体系内审员</span>
+                <span class="chip">计算机一级 · 人工智能与大模型基础</span>
+                <span class="chip">计算机三级 · 网络技术</span>
+                <span class="chip">CET-4 · 496</span>
+                <span class="chip">CET-6 · 507</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 10: CONTACT -->
+      <section class="slide" data-slide-id="contact" data-original-number="10" data-slide-title="联系我">
+        <div class="content contact-layout">
+          <div>
+            <div class="kicker reveal">Let's talk</div>
+            <h2 class="reveal" style="--delay: 70ms">期待与<span class="serif">同频的人</span>交流。</h2>
+            <p class="lead reveal" style="--delay: 140ms">对我的项目、学习方向或创作内容感兴趣，欢迎随时联系。</p>
+            <div class="contact-cta reveal" style="--delay: 210ms">
+              <a class="btn" href="https://songzhiduo-portfolio-d3a62b54c6c-1453799877.tcloudbaseapp.com" target="_blank" rel="noopener noreferrer">查看完整作品集网站</a>
+            </div>
+          </div>
+          <div class="contact-side">
+            <div class="contact-row reveal" style="--delay: 150ms">
+              <span class="mono">EMAIL</span>
+              <span class="val">1977230406@qq.com</span>
+            </div>
+            <div class="contact-row reveal" style="--delay: 200ms">
+              <span class="mono">GITHUB</span>
+              <span class="val"><a href="https://github.com/rainbowb400-bot" target="_blank" rel="noopener noreferrer">rainbowb400-bot</a></span>
+            </div>
+            <div class="contact-row reveal" style="--delay: 250ms">
+              <span class="mono">小红书</span>
+              <span class="val">@江户川淞然雷子</span>
+            </div>
+            <div class="contact-row reveal" style="--delay: 300ms">
+              <span class="mono">播客</span>
+              <span class="val"><a href="https://www.xiaoyuzhoufm.com/podcast/6a0ac9dcbf4b2a18244b3b80" target="_blank" rel="noopener noreferrer">小宇宙 · 原创播客</a></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <div class="edit-hotzone" aria-hidden="true"></div>
+  <button class="edit-toggle" id="editToggle" title="编辑模式（E）" aria-label="编辑模式">编辑</button>
+
+  <script>
+    /* === SLIDE PRESENTATION CONTROLLER === */
+    class SlidePresentation {
+      constructor() {
+        this.slides = Array.from(document.querySelectorAll('.slide'));
+        this.currentSlide = 0;
+        this.stage = document.getElementById('deckStage');
+        this.setupStageScale();
+        this.setupKeyboardNav();
+        this.setupTouchNav();
+        window.addEventListener('hashchange', () => this.showSlide(this.initialIndex()));
+        this.showSlide(this.initialIndex());
+      }
+
+      initialIndex() {
+        const match = location.hash.match(/[#&]s=(\d+)/);
+        if (!match) return 0;
+        const index = parseInt(match[1], 10) - 1;
+        return Number.isFinite(index) ? index : 0;
+      }
+
+      setupStageScale() {
+        const scale = () => {
+          const factor = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+          const x = (window.innerWidth - 1920 * factor) / 2;
+          const y = (window.innerHeight - 1080 * factor) / 2;
+          this.stage.style.transform = `translate(${x}px, ${y}px) scale(${factor})`;
+        };
+        scale();
+        window.addEventListener('resize', scale);
+      }
+
+      setupKeyboardNav() {
+        window.addEventListener('keydown', (event) => {
+          const t = event.target;
+          if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT' ||
+              (t.getAttribute && t.getAttribute('contenteditable') === 'true'))) return;
+          if (['ArrowRight', 'ArrowDown', ' ', 'PageDown'].includes(event.key)) {
+            event.preventDefault();
+            this.next();
+          } else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(event.key)) {
+            event.preventDefault();
+            this.previous();
+          } else if (event.key === 'Home') {
+            event.preventDefault();
+            this.showSlide(0);
+          } else if (event.key === 'End') {
+            event.preventDefault();
+            this.showSlide(this.slides.length - 1);
+          } else if (event.key === 'f' || event.key === 'F') {
+            event.preventDefault();
+            if (document.fullscreenElement) {
+              document.exitFullscreen().catch(() => {});
+            } else if (document.documentElement.requestFullscreen) {
+              document.documentElement.requestFullscreen().catch(() => {});
+            }
+          }
+        });
+      }
+
+      setupTouchNav() {
+        let startX = 0;
+        window.addEventListener('pointerdown', (event) => { startX = event.clientX; });
+        window.addEventListener('pointerup', (event) => {
+          const delta = event.clientX - startX;
+          if (Math.abs(delta) < 60) return;
+          if (delta < 0) this.next();
+          if (delta > 0) this.previous();
+        });
+      }
+
+      showSlide(index) {
+        this.currentSlide = Math.max(0, Math.min(index, this.slides.length - 1));
+        this.slides.forEach((slide, i) => {
+          slide.classList.toggle('active', i === this.currentSlide);
+          slide.classList.toggle('visible', i === this.currentSlide);
+          this.ensureChrome(slide, i);
+        });
+      }
+
+      ensureChrome(slide, index) {
+        let progress = slide.querySelector('.progress');
+        let pageNumber = slide.querySelector('.page-number');
+        if (!progress) {
+          progress = document.createElement('div');
+          progress.className = 'progress';
+          progress.innerHTML = '<span></span>';
+          slide.appendChild(progress);
+        }
+        if (!pageNumber) {
+          pageNumber = document.createElement('div');
+          pageNumber.className = 'page-number';
+          slide.appendChild(pageNumber);
+        }
+        const total = this.slides.length;
+        pageNumber.textContent = `${String(index + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`;
+        progress.querySelector('span').style.width = `${((index + 1) / total) * 100}%`;
+      }
+
+      next() { this.showSlide(this.currentSlide + 1); }
+      previous() { this.showSlide(this.currentSlide - 1); }
+    }
+
+    /* === INLINE EDITOR === */
+    class InlineEditor {
+      constructor() {
+        this.isActive = false;
+        this.key = `songzhiduo-presentation-edits:${location.pathname}`;
+        this.toggle = document.getElementById('editToggle');
+        this.hotzone = document.querySelector('.edit-hotzone');
+        this.hideTimeout = null;
+        this.load();
+        this.bind();
+      }
+
+      editableNodes() {
+        return Array.from(document.querySelectorAll(
+          '.slide h1, .slide h2, .slide h3, .slide p, .slide strong, .slide li, .slide .chip, .slide .kicker, .slide .mono, .slide .val, .slide .shot-tag, .slide .frame, .slide .cap'
+        )).filter((node) => !node.closest('.progress, .page-number'));
+      }
+
+      prepareEditIds() {
+        const seen = {};
+        this.editableNodes().forEach((node) => {
+          if (node.dataset.editId) return;
+          const slide = node.closest('.slide');
+          const slideId = slide ? (slide.dataset.slideId || 'page') : 'page';
+          const role = node.classList[0] || node.tagName.toLowerCase();
+          const base = `${slideId}-${role}`.replace(/[^a-zA-Z0-9_-]+/g, '-').toLowerCase();
+          const count = seen[base] || 0;
+          seen[base] = count + 1;
+          node.dataset.editId = count ? `${base}-${count + 1}` : base;
+        });
+      }
+
+      bind() {
+        if (!this.toggle || !this.hotzone) return;
+        this.toggle.addEventListener('click', () => this.toggleEditMode());
+        this.hotzone.addEventListener('click', () => this.toggleEditMode());
+        this.hotzone.addEventListener('mouseenter', () => this.showToggle());
+        this.hotzone.addEventListener('mouseleave', () => this.scheduleHide());
+        this.toggle.addEventListener('mouseenter', () => this.showToggle());
+        this.toggle.addEventListener('mouseleave', () => this.scheduleHide());
+        document.addEventListener('keydown', (event) => {
+          const editing = event.target && event.target.getAttribute && event.target.getAttribute('contenteditable') === 'true';
+          if ((event.key === 'e' || event.key === 'E') && !editing) {
+            event.preventDefault();
+            this.toggleEditMode();
+          }
+          if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 's') {
+            event.preventDefault();
+            this.save();
+          }
+          if (event.key === 'Escape' && this.isActive) {
+            event.preventDefault();
+            this.setActive(false);
+          }
+        });
+      }
+
+      showToggle() {
+        clearTimeout(this.hideTimeout);
+        this.toggle.classList.add('show');
+      }
+
+      scheduleHide() {
+        this.hideTimeout = setTimeout(() => {
+          if (!this.isActive) this.toggle.classList.remove('show');
+        }, 420);
+      }
+
+      toggleEditMode() {
+        this.setActive(!this.isActive);
+      }
+
+      setActive(active) {
+        this.isActive = active;
+        document.body.classList.toggle('editing', this.isActive);
+        this.toggle.classList.toggle('active', this.isActive);
+        this.toggle.textContent = this.isActive ? '编辑中' : '编辑';
+        this.editableNodes().forEach((node) => {
+          node.setAttribute('contenteditable', this.isActive ? 'true' : 'false');
+          node.setAttribute('spellcheck', 'false');
+        });
+        if (!this.isActive) this.save();
+      }
+
+      save() {
+        this.prepareEditIds();
+        const data = {};
+        this.editableNodes().forEach((node) => {
+          data[node.dataset.editId] = node.innerHTML;
+        });
+        localStorage.setItem(this.key, JSON.stringify(data));
+        this.toggle.textContent = '已保存';
+        setTimeout(() => {
+          this.toggle.textContent = this.isActive ? '编辑中' : '编辑';
+        }, 900);
+      }
+
+      load() {
+        this.prepareEditIds();
+        const raw = localStorage.getItem(this.key);
+        if (!raw) return;
+        try {
+          const data = JSON.parse(raw);
+          if (!data || Array.isArray(data)) return;
+          this.editableNodes().forEach((node) => {
+            if (typeof data[node.dataset.editId] === 'string') node.innerHTML = data[node.dataset.editId];
+          });
+        } catch (error) {
+          localStorage.removeItem(this.key);
+        }
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      new SlidePresentation();
+      new InlineEditor();
+    });
+  </script>
+</body>
+</html>

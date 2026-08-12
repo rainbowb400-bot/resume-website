@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "skills": {
+    "zhengshuwen-powerycy-personal-homepage-skill": {
+      "name": "zhengshuwen-powerycy-personal-homepage-skill",
+      "version": "1.0.5",
+      "source": "redskill",
+      "install_dir": "D:\\坨坨的文件夹\\01_项目\\03_songzhiduo-resume\\songzhiduo-resume\\skills\\zhengshuwen-powerycy-personal-homepage-skill",
+      "installed_at": "1786268361489",
+      "sha256": "fd3d59180e3c6eee3319a6e4da7d158db1d4a7da5214c97877171d5bab9cf08a"
+    }
+  }
+}
