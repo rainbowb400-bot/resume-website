@@ -1211,6 +1211,217 @@ img {
 }
 
 /* ===================================
+   Skills (12 列)
+=================================== */
+
+.skills-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(12, 1fr);
+
+    gap: 24px;
+
+}
+
+
+.skill-group {
+
+    grid-column: span 3;
+
+}
+
+
+.skill-kicker {
+
+    margin: 0 0 8px;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    letter-spacing: 0.16em;
+
+    text-transform: uppercase;
+
+    color: var(--primary);
+
+    font-variant-numeric: tabular-nums;
+
+}
+
+
+.skill-group h3 {
+
+    margin: 0 0 14px;
+
+    font-size: 18px;
+
+}
+
+
+@media (max-width: 1024px) {
+
+    .skill-group {
+
+        grid-column: span 6;
+
+    }
+
+}
+
+
+@media (max-width: 768px) {
+
+    .skill-group {
+
+        grid-column: span 12;
+
+    }
+
+}
+
+/* ===================================
+   Education / Certificates / GitHub / Contact
+=================================== */
+
+.edu-row {
+
+    display: grid;
+
+    grid-template-columns: repeat(12, 1fr);
+
+    gap: 24px 48px;
+
+}
+
+
+.edu-meta {
+
+    grid-column: 1 / span 4;
+
+}
+
+
+.edu-meta h3 {
+
+    margin: 0 0 10px;
+
+    font-size: 22px;
+
+}
+
+
+.edu-meta p {
+
+    margin: 0 0 4px;
+
+    color: var(--gray);
+
+    font-size: 14px;
+
+    line-height: 1.7;
+
+}
+
+
+.edu-body {
+
+    grid-column: 5 / span 8;
+
+}
+
+
+.edu-body > p {
+
+    margin: 0 0 16px;
+
+    color: var(--text);
+
+    font-size: 15px;
+
+    line-height: 1.8;
+
+}
+
+
+.edu-body .chips {
+
+    margin: 0;
+
+}
+
+
+.cert-block,
+.contact-block {
+
+    border-top: 1px solid var(--border);
+
+    padding-top: 28px;
+
+}
+
+
+.cert-block .chips {
+
+    margin: 0;
+
+}
+
+
+.contact-block p {
+
+    margin: 0 0 14px;
+
+    font-size: 16px;
+
+    line-height: 1.8;
+
+}
+
+
+.contact-block a {
+
+    color: var(--primary);
+
+    text-decoration: none;
+
+}
+
+
+.contact-block a:hover {
+
+    text-decoration: underline;
+
+}
+
+
+@media (max-width: 1024px) {
+
+    .edu-row {
+
+        grid-template-columns: 1fr;
+
+        gap: 20px;
+
+    }
+
+    .edu-meta,
+    .edu-body {
+
+        grid-column: 1 / -1;
+
+    }
+
+    .edu-body {
+
+        max-width: 720px;
+
+    }
+
+}
+
+/* ===================================
    Footer
 =================================== */
 
