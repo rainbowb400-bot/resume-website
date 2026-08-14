@@ -711,8 +711,7 @@ img {
 }
 
 
-.project-media figcaption,
-.about-media figcaption {
+.project-media figcaption {
 
     font-size: 12px;
 
@@ -1104,7 +1103,9 @@ img {
 
 .about-text {
 
-    grid-column: 1 / span 7;
+    grid-column: 1 / span 8;
+
+    max-width: 760px;
 
     font-size: 17px;
 
@@ -1142,32 +1143,6 @@ img {
 }
 
 
-.about-media {
-
-    grid-column: 8 / span 5;
-
-    margin: 0;
-
-}
-
-
-.about-avatar {
-
-    display: block;
-
-    width: 100%;
-
-    height: auto;
-
-    border: 1px solid var(--border-strong);
-
-    border-radius: 2px;
-
-    margin-bottom: 12px;
-
-}
-
-
 @media (max-width: 1024px) {
 
     .about-grid {
@@ -1178,22 +1153,11 @@ img {
 
     }
 
-    .about-text,
-    .about-media {
+    .about-text {
 
         grid-column: 1 / -1;
 
-    }
-
-    .about-text {
-
         max-width: 720px;
-
-    }
-
-    .about-media {
-
-        max-width: 320px;
 
     }
 
@@ -1425,8 +1389,7 @@ img {
    Interaction (grayscale reveal)
 =================================== */
 
-.project-media .project-cover,
-.about-avatar {
+.project-media .project-cover {
 
     filter: grayscale(1);
 
@@ -1435,15 +1398,9 @@ img {
 }
 
 
-.project-media:hover .project-cover,
-.about-media:hover .about-avatar {
+.project-media:hover .project-cover {
 
     filter: grayscale(0);
-
-}
-
-
-.project-media:hover .project-cover {
 
     border-color: var(--accent-line);
 
@@ -1452,8 +1409,7 @@ img {
 
 @media (hover: none) {
 
-    .project-media .project-cover,
-    .about-avatar {
+    .project-media .project-cover {
 
         filter: none;
 
