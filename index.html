@@ -39,6 +39,10 @@
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="style.css">
 
 </head>
@@ -136,7 +140,10 @@
 
 <section id="about">
 
-    <h2>关于我</h2>
+    <header class="section-head">
+        <p class="kicker"><span>01</span> / ABOUT</p>
+        <h2>关于我</h2>
+    </header>
 
     <div class="card">
 
@@ -165,7 +172,18 @@
 
 <section id="exp">
 
-    <h2>工作经历</h2>
+    <header class="section-head">
+        <p class="kicker"><span>02</span> / EXPERIENCE</p>
+        <h2>工作经历</h2>
+    </header>
+
+    <div class="timeline">
+
+    <div class="timeline-item">
+
+        <p class="tl-year">2026</p>
+
+        <span class="tl-node"></span>
 
     <div class="project-card">
 
@@ -189,6 +207,15 @@
         </div>
 
     </div>
+
+    </div>
+
+
+    <div class="timeline-item">
+
+        <p class="tl-year">2025</p>
+
+        <span class="tl-node"></span>
 
 
     <div class="project-card">
@@ -215,6 +242,15 @@
 
     </div>
 
+    </div>
+
+
+    <div class="timeline-item">
+
+        <p class="tl-year">2025</p>
+
+        <span class="tl-node"></span>
+
 
     <div class="project-card">
 
@@ -239,6 +275,15 @@
 
     </div>
 
+    </div>
+
+
+    <div class="timeline-item">
+
+        <p class="tl-year">2024</p>
+
+        <span class="tl-node"></span>
+
 
     <div class="project-card">
 
@@ -261,6 +306,15 @@
         </div>
 
     </div>
+
+    </div>
+
+
+    <div class="timeline-item">
+
+        <p class="tl-year">2023</p>
+
+        <span class="tl-node"></span>
 
 
     <div class="project-card">
@@ -286,6 +340,10 @@
 
     </div>
 
+    </div>
+
+    </div>
+
 </section>
 
 
@@ -294,42 +352,50 @@
 
 <section id="projects">
 
-    <h2>项目经历</h2>
+    <header class="section-head">
+        <p class="kicker"><span>03</span> / PROJECTS</p>
+        <h2>项目经历</h2>
+    </header>
 
 
-    <div class="project-card">
-        <picture>
-            <source
-                type="image/webp"
-                srcset="assets/covers/portfolio-cover-800.webp 800w, assets/covers/portfolio-cover-1600.webp 1600w"
-                sizes="(max-width: 768px) 100vw, 860px">
-            <img
-                loading="lazy"
-                src="assets/covers/portfolio-cover.png"
-                width="1600"
-                height="900"
-                alt="个人作品集网站封面"
-                class="project-cover">
-        </picture>
-        <h3>个人 Portfolio 网站开发</h3>
+    <div class="project-row">
 
-        <p>
-            独立完成个人网站从设计、开发到部署的全流程，
-            使用 HTML、CSS 构建响应式页面，
-            通过 Git 进行版本管理与持续迭代（30+ 次提交），
-            并部署至 GitHub Pages 与腾讯云。
-        </p>
+        <figure class="project-media">
+            <picture>
+                <source
+                    type="image/webp"
+                    srcset="assets/covers/portfolio-cover-800.webp 800w, assets/covers/portfolio-cover-1600.webp 1600w"
+                    sizes="(max-width: 1024px) 100vw, 560px">
+                <img
+                    loading="lazy"
+                    src="assets/covers/portfolio-cover.png"
+                    width="1600"
+                    height="900"
+                    alt="个人作品集网站封面"
+                    class="project-cover">
+            </picture>
+            <figcaption>PORTFOLIO — PERSONAL WEBSITE · 2026</figcaption>
+        </figure>
 
-        <p class="outcome">产出：线上作品集网站 · 开源仓库 · 30+ 次迭代提交</p>
+        <div class="project-info">
+            <p class="project-index">PROJECT 01</p>
+            <h3>个人 Portfolio 网站开发</h3>
+            <p class="project-lead">独立完成个人网站从设计、开发到部署的全流程。</p>
+            <p class="project-desc">使用 HTML、CSS 构建响应式页面，通过 Git 进行版本管理与持续迭代（30+ 次提交），并部署至 GitHub Pages 与腾讯云。</p>
 
-        <div class="chips">
+            <div class="chips">
 
-            <span>HTML</span>
-            <span>CSS</span>
-            <span>Git</span>
-            <span>GitHub Pages</span>
-            <span>AI Tools</span>
+                <span>HTML</span>
+                <span>CSS</span>
+                <span>Git</span>
+                <span>GitHub Pages</span>
+                <span>AI Tools</span>
 
+            </div>
+
+            <p class="outcome">产出：线上作品集网站 · 开源仓库 · 30+ 次迭代提交</p>
+
+            <a class="secondary-btn project-link" href="https://songzhiduo-portfolio-d3a62b54c6c-1453799877.tcloudbaseapp.com" target="_blank" rel="noopener noreferrer">查看网站</a>
         </div>
 
     </div>
@@ -467,7 +533,10 @@
 
 <section id="edu">
 
-    <h2>教育</h2>
+    <header class="section-head">
+        <p class="kicker"><span>04</span> / EDUCATION</p>
+        <h2>教育</h2>
+    </header>
 
     <div class="project-card">
 
@@ -507,7 +576,10 @@
 
 <section id="skills">
 
-    <h2>技能</h2>
+    <header class="section-head">
+        <p class="kicker"><span>05</span> / SKILLS</p>
+        <h2>技能</h2>
+    </header>
 
 
     <div class="project-card">
@@ -585,7 +657,10 @@
 
 <section id="certificates">
 
-    <h2>证书与资质</h2>
+    <header class="section-head">
+        <p class="kicker"><span>06</span> / CERTIFICATES</p>
+        <h2>证书与资质</h2>
+    </header>
 
     <div class="project-card">
 
@@ -609,7 +684,10 @@
 
 <section id="github">
 
-    <h2>GitHub</h2>
+    <header class="section-head">
+        <p class="kicker"><span>07</span> / GITHUB</p>
+        <h2>GitHub</h2>
+    </header>
 
 
     <div class="project-card">
@@ -662,7 +740,10 @@
 
 <section id="contact">
 
-    <h2>联系我</h2>
+    <header class="section-head">
+        <p class="kicker"><span>08</span> / CONTACT</p>
+        <h2>联系我</h2>
+    </header>
 
     <div class="card">
 
