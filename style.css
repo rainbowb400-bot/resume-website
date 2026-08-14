@@ -1422,6 +1422,46 @@ img {
 }
 
 /* ===================================
+   Interaction (grayscale reveal)
+=================================== */
+
+.project-media .project-cover,
+.about-avatar {
+
+    filter: grayscale(1);
+
+    transition: filter 0.35s ease, border-color 0.35s ease;
+
+}
+
+
+.project-media:hover .project-cover,
+.about-media:hover .about-avatar {
+
+    filter: grayscale(0);
+
+}
+
+
+.project-media:hover .project-cover {
+
+    border-color: var(--accent-line);
+
+}
+
+
+@media (hover: none) {
+
+    .project-media .project-cover,
+    .about-avatar {
+
+        filter: none;
+
+    }
+
+}
+
+/* ===================================
    Footer
 =================================== */
 
