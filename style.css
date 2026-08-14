@@ -711,7 +711,8 @@ img {
 }
 
 
-.project-media figcaption {
+.project-media figcaption,
+.about-media figcaption {
 
     font-size: 12px;
 
@@ -818,6 +819,51 @@ img {
 }
 
 
+.project-actions {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 12px;
+
+}
+
+
+/* 交替行：左右镜像（文字左 / 图片右） */
+
+@media (min-width: 1025px) {
+
+    .project-row--flip .project-media {
+
+        grid-column: 6 / span 7;
+
+        margin-top: 56px;
+
+    }
+
+    .project-row--flip .project-info {
+
+        grid-column: 1 / span 5;
+
+        margin-top: 0;
+
+    }
+
+}
+
+
+/* 无封面项目的文字行 */
+
+.project-row--text .project-info {
+
+    grid-column: 1 / span 7;
+
+    margin-top: 0;
+
+}
+
+
 @media (max-width: 1024px) {
 
     .project-row {
@@ -836,6 +882,18 @@ img {
         grid-column: 1 / -1;
 
         margin-top: 0;
+
+    }
+
+    .project-row--flip .project-media {
+
+        order: 1;
+
+    }
+
+    .project-row--flip .project-info {
+
+        order: 2;
 
     }
 
@@ -1016,6 +1074,125 @@ img {
         margin-bottom: 28px;
 
         padding: 16px;
+
+    }
+
+}
+
+/* ===================================
+   About (editorial split)
+=================================== */
+
+.about-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(12, 1fr);
+
+    gap: 24px 48px;
+
+    align-items: start;
+
+}
+
+
+.about-text {
+
+    grid-column: 1 / span 7;
+
+    font-size: 17px;
+
+    line-height: 1.8;
+
+}
+
+
+.about-text p {
+
+    margin: 0 0 14px;
+
+}
+
+
+.about-text .about-lead {
+
+    margin: 0 0 18px;
+
+    font-size: 22px;
+
+    font-weight: 600;
+
+    line-height: 1.6;
+
+    color: var(--text-strong);
+
+}
+
+
+.about-text p:last-child {
+
+    margin-bottom: 0;
+
+}
+
+
+.about-media {
+
+    grid-column: 8 / span 5;
+
+    margin: 0;
+
+}
+
+
+.about-avatar {
+
+    display: block;
+
+    width: 100%;
+
+    height: auto;
+
+    border: 1px solid var(--border-strong);
+
+    border-radius: 2px;
+
+    margin-bottom: 12px;
+
+}
+
+
+@media (max-width: 1024px) {
+
+    .about-grid {
+
+        grid-template-columns: 1fr;
+
+        gap: 24px;
+
+    }
+
+    .about-text,
+    .about-media {
+
+        grid-column: 1 / -1;
+
+    }
+
+    .about-media {
+
+        max-width: 320px;
+
+    }
+
+}
+
+
+@media (max-width: 768px) {
+
+    .about-text .about-lead {
+
+        font-size: 20px;
 
     }
 
