@@ -70,7 +70,7 @@ body {
 
 .wrap {
 
-    max-width: 900px;
+    max-width: 1200px;
 
     margin: auto;
 
@@ -897,6 +897,12 @@ img {
 
     }
 
+    .project-info {
+
+        max-width: 720px;
+
+    }
+
 }
 
 /* ===================================
@@ -916,7 +922,7 @@ img {
 
     display: grid;
 
-    grid-template-columns: 100px 48px 1fr;
+    grid-template-columns: 100px 48px minmax(0, 760px);
 
     column-gap: 20px;
 
@@ -1176,6 +1182,12 @@ img {
     .about-media {
 
         grid-column: 1 / -1;
+
+    }
+
+    .about-text {
+
+        max-width: 720px;
 
     }
 
